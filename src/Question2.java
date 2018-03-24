@@ -5,16 +5,17 @@ public class Question2 {
 
     public static void main(String[] args) {
         System.out.println("");
-
+        //Testing with 3 input sizes
         testSort(100);
         testSort(1000);
         testSort(10000);
     }
 
     static void testSort(int arraySize){
-        int[] inputArray = new int[arraySize];
-        int[] copyOfInput = new int[arraySize];
+        //Initialize Arrays
+        int[] copyOfInput,inputArray = new int[arraySize];
         resetStatsAndInputArray(inputArray);
+        //Copy to keep the input same for each sort for fair chance.
         copyOfInput = inputArray.clone();
 
         System.out.println("Array Size is "+arraySize);
@@ -48,6 +49,7 @@ public class Question2 {
 
     }
 
+    //Logic For bubble sort
     private static void bubbleSort(int[] inputArray) {
         for (int i = 0; i < inputArray.length-1; i++) {
             for (int j = 0; j < inputArray.length-i-1; j++) {
@@ -57,16 +59,15 @@ public class Question2 {
         }
     }
 
+    //Method to print sort statistics.
     private static void printStats(String name , long sortTime) {
-
-
-
         System.out.println("************************   "+name.toUpperCase()+ "    ************************");
 
         System.out.println("Number of Swaps is : "+ swapCount);
         System.out.println("Time Taken : "+sortTime+"ms");
     }
 
+    //Insertion Sort Logic
     private static void insertionSort(int[] inputArray) {
         for (int mainIterator = 0; mainIterator < inputArray.length; mainIterator++) {
             int sortedPartIndex = mainIterator;
@@ -78,6 +79,7 @@ public class Question2 {
         }
     }
 
+    //Method to swap elements in an array at given indices.
     private static void swapInArray(int[] inputArray, int firstIndex, int secondIndex) {
         int temp = inputArray[firstIndex];
         inputArray[firstIndex] = inputArray[secondIndex];
@@ -108,8 +110,9 @@ public class Question2 {
         int index = 0;
         int leftIterator = lowerBound;
         int rightIterator = mid;
-        //
+        //Merge Logic
         while(leftIterator < mid && rightIterator < upperBound){
+            //Check to pick from left array or right
             if(inputArray[leftIterator] <= inputArray[rightIterator]){
                 tempArray[index] = inputArray[leftIterator];
                 leftIterator++;
@@ -130,7 +133,7 @@ public class Question2 {
             inputArray[lowerBound+iterator] = tempArray[iterator];
     }
 
-
+    //Method to reset array, and additional params.
     private static void resetStatsAndInputArray(int[] inputArray) {
         swapCount = 0;
         for (int i = 0; i < inputArray.length; i++) {
