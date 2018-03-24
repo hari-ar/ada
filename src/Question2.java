@@ -1,14 +1,88 @@
 public class Question2 {
-    static int arraySize = 100;
+    //static int arraySize = 10;
+    private static int swapCount =0;
+
+
     public static void main(String[] args) {
-        testSort();
+        System.out.println("");
+
+        testSort(100);
+        testSort(1000);
+        testSort(10000);
     }
 
-    static void testSort(){
+    static void testSort(int arraySize){
         int[] inputArray = new int[arraySize];
-        populateArray(inputArray);
+        int[] copyOfInput = new int[arraySize];
+        resetStatsAndInputArray(inputArray);
+        copyOfInput = inputArray.clone();
+
+        System.out.println("Array Size is "+arraySize);
+
+
+        //MergeSort
+        long startTime = System.currentTimeMillis();
+        swapCount =0;
         mergeSort(0,inputArray.length,inputArray);
-        System.out.println(isSorted(inputArray));
+        long mergeSortTime = System.currentTimeMillis()-startTime;
+        printStats("MergeSort",mergeSortTime);
+
+        //InsertionSort
+        inputArray = copyOfInput.clone();
+        swapCount =0;
+        startTime = System.currentTimeMillis();
+        insertionSort(inputArray);
+        long insertionSortTime = System.currentTimeMillis()-startTime;
+        printStats("Insertion Sort",insertionSortTime);
+        //System.out.println(isSorted(inputArray));
+
+
+        //BubbleSort
+        inputArray = copyOfInput.clone();
+        swapCount = 0;
+        startTime = System.currentTimeMillis();
+        bubbleSort(inputArray);
+        long bubbleSortTime = System.currentTimeMillis()-startTime;
+        printStats("Bubble Sort", bubbleSortTime);
+        System.out.println("\n\n");
+
+    }
+
+    private static void bubbleSort(int[] inputArray) {
+        for (int i = 0; i < inputArray.length-1; i++) {
+            for (int j = 0; j < inputArray.length-i-1; j++) {
+                if(inputArray[j]>inputArray[j+1])
+                    swapInArray(inputArray,j,j+1);
+            }
+        }
+    }
+
+    private static void printStats(String name , long sortTime) {
+
+
+
+        System.out.println("************************   "+name.toUpperCase()+ "    ************************");
+
+        System.out.println("Number of Swaps is : "+ swapCount);
+        System.out.println("Time Taken : "+sortTime+"ms");
+    }
+
+    private static void insertionSort(int[] inputArray) {
+        for (int mainIterator = 0; mainIterator < inputArray.length; mainIterator++) {
+            int sortedPartIndex = mainIterator;
+            //int temp = inputArray[mainIterator];
+            while (sortedPartIndex >0 && inputArray[sortedPartIndex]<inputArray[sortedPartIndex-1]) {
+                swapInArray(inputArray,sortedPartIndex,sortedPartIndex-1);
+                sortedPartIndex--;
+            }
+        }
+    }
+
+    private static void swapInArray(int[] inputArray, int firstIndex, int secondIndex) {
+        int temp = inputArray[firstIndex];
+        inputArray[firstIndex] = inputArray[secondIndex];
+        inputArray[secondIndex]= temp;
+        swapCount++;
     }
 
     private static boolean isSorted(int[] inputArray) {
@@ -57,7 +131,8 @@ public class Question2 {
     }
 
 
-    private static void populateArray(int[] inputArray) {
+    private static void resetStatsAndInputArray(int[] inputArray) {
+        swapCount = 0;
         for (int i = 0; i < inputArray.length; i++) {
             inputArray[i] = (int) (Math.random()*1000);
         }
